@@ -1,0 +1,129 @@
+name: Autograding Tests
+on:
+  - push
+  - repository_dispatch
+branches:
+  - main
+permissions:
+  checks: write
+  actions: read
+  contents: read
+jobs:
+  run-autograding-tests:
+    runs-on: macos-13
+    if: github.actor != 'github-classroom[bot]'
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Build project
+      run: xcodebuild build -project HW3.xcodeproj -scheme HW3 -destination 'platform=iOS'
+
+    - name: testAllElementsExist
+      id: testAllElementsExist
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: testAllElementsExist
+        setup-command: ''
+        command: xcodebuild test -project HW3.xcodeproj -scheme HW3 -destination 'platform=iOS Simulator,name=iPhone 15 Pro Max,OS=17.5' -only-testing:HW3UITests/HW3UITests/testAllElementsExist | grep -q "Executed 1 test, with 0 failures"
+        timeout: 60
+        max-score: 20
+
+    - name: testTappingEachNumeralElementChangesTheResultLabel
+      id: testTappingEachNumeralElementChangesTheResultLabel
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: testTappingEachNumeralElementChangesTheResultLabel
+        setup-command: ''
+        command: xcodebuild test -project HW3.xcodeproj -scheme HW3 -destination 'platform=iOS Simulator,name=iPhone 15 Pro Max,OS=17.5' -only-testing:HW3UITests/HW3UITests/testTappingEachNumeralElementChangesTheResultLabel | grep -q "Executed 1 test, with 0 failures"
+        timeout: 60
+        max-score: 10
+
+    - name: testTappingEachNumeralElementChangesTheResultLabelAndTappingClearResultsInDefaultValueOf0
+      id: testTappingEachNumeralElementChangesTheResultLabelAndTappingClearResultsInDefaultValueOf0
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: testTappingEachNumeralElementChangesTheResultLabelAndTappingClearResultsInDefaultValueOf0
+        setup-command: ''
+        command: xcodebuild test -project HW3.xcodeproj -scheme HW3 -destination 'platform=iOS Simulator,name=iPhone 15 Pro Max,OS=17.5' -only-testing:HW3UITests/HW3UITests/testTappingEachNumeralElementChangesTheResultLabelAndTappingClearResultsInDefaultValueOf0 | grep -q "Executed 1 test, with 0 failures"
+        timeout: 60
+        max-score: 10
+
+    - name: testBasicAddOperation
+      id: testBasicAddOperation
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: testBasicAddOperation
+        setup-command: ''
+        command: xcodebuild test -project HW3.xcodeproj -scheme HW3 -destination 'platform=iOS Simulator,name=iPhone 15 Pro Max,OS=17.5' -only-testing:HW3UITests/HW3UITests/testBasicAddOperation | grep -q "Executed 1 test, with 0 failures"
+        timeout: 60
+        max-score: 10
+
+    - name: testBasicAddOperation2
+      id: testBasicAddOperation2
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: testBasicAddOperation2
+        setup-command: ''
+        command: xcodebuild test -project HW3.xcodeproj -scheme HW3 -destination 'platform=iOS Simulator,name=iPhone 15 Pro Max,OS=17.5' -only-testing:HW3UITests/HW3UITests/testBasicAddOperation2 | grep -q "Executed 1 test, with 0 failures"
+        timeout: 60
+        max-score: 10
+
+    - name: testBasicAddOperation3
+      id: testBasicAddOperation3
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: testBasicAddOperation3
+        setup-command: ''
+        command: xcodebuild test -project HW3.xcodeproj -scheme HW3 -destination 'platform=iOS Simulator,name=iPhone 15 Pro Max,OS=17.5' -only-testing:HW3UITests/HW3UITests/testBasicAddOperation3 | grep -q "Executed 1 test, with 0 failures"
+        timeout: 60
+        max-score: 10
+
+    - name: testBasicAddOperation4
+      id: testBasicAddOperation4
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: testBasicAddOperation4
+        setup-command: ''
+        command: xcodebuild test -project HW3.xcodeproj -scheme HW3 -destination 'platform=iOS Simulator,name=iPhone 15 Pro Max,OS=17.5' -only-testing:HW3UITests/HW3UITests/testBasicAddOperation4 | grep -q "Executed 1 test, with 0 failures"
+        timeout: 60
+        max-score: 10
+
+    - name: testBasicAddOperation5
+      id: testBasicAddOperation5
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: testBasicAddOperation5
+        setup-command: ''
+        command: xcodebuild test -project HW3.xcodeproj -scheme HW3 -destination 'platform=iOS Simulator,name=iPhone 15 Pro Max,OS=17.5' -only-testing:HW3UITests/HW3UITests/testBasicAddOperation5 | grep -q "Executed 1 test, with 0 failures"
+        timeout: 60
+        max-score: 10
+
+    - name: testWildcardMath
+      id: testWildcardMath
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: testWildcardMath
+        setup-command: ''
+        command: xcodebuild test -project HW3.xcodeproj -scheme HW3 -destination 'platform=iOS Simulator,name=iPhone 15 Pro Max,OS=17.5' -only-testing:HW3UITests/HW3UITests/testWildcardMath | grep -q "Executed 1 test, with 0 failures"
+        timeout: 60
+        max-score: 10
+    
+    # Grading
+          
+    - name: Autograding Reporter
+      uses: classroom-resources/autograding-grading-reporter@v1
+      env:
+        TESTALLELEMENTSEXIST_RESULTS: "${{steps.testAllElementsExist.outputs.result}}"
+        TESTTAPPINGEACHNUMERALELEMENTCHANGESTHERESULTLABEL_RESULTS: "${{steps.testTappingEachNumeralElementChangesTheResultLabel.outputs.result}}"
+        TESTTAPPINGEACHNUMERALELEMENTCHANGESTHERESULTLABELANDTAPPINGCLEARRESULTSINDEFAULTVALUEOF0_RESULTS: "${{steps.testTappingEachNumeralElementChangesTheResultLabelAndTappingClearResultsInDefaultValueOf0.outputs.result}}"
+        TESTBASICADDOPERATION_RESULTS: "${{steps.testBasicAddOperation.outputs.result}}"
+        TESTBASICADDOPERATION2_RESULTS: "${{steps.testBasicAddOperation2.outputs.result}}"
+        TESTBASICADDOPERATION3_RESULTS: "${{steps.testBasicAddOperation3.outputs.result}}"
+        TESTBASICADDOPERATION4_RESULTS: "${{steps.testBasicAddOperation4.outputs.result}}"
+        TESTBASICADDOPERATION5_RESULTS: "${{steps.testBasicAddOperation5.outputs.result}}"
+        TESTWILDCARDMATH_RESULTS: "${{steps.testWildcardMath.outputs.result}}"
+
+      with:
+        runners: testAllElementsExist,testTappingEachNumeralElementChangesTheResultLabel,testTappingEachNumeralElementChangesTheResultLabelAndTappingClearResultsInDefaultValueOf0,testBasicAddOperation,testBasicAddOperation2,testBasicAddOperation3,testBasicAddOperation4,testBasicAddOperation5,testWildcardMath
